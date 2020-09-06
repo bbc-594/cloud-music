@@ -1,0 +1,20 @@
+@index-font-size: 16px;
+@index-gray: #f2f3f5;
+@index-color: #df3b3b;
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.moreEllipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.grid (@gap:10px, @min,@max: 10vw) {
+  display: grid;
+  grid-gap: @gap;
+  grid-template-columns: repeat(auto-fit, minmax(@min, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(@max, 1fr));
+}

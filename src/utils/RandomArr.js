@@ -1,14 +1,14 @@
 export const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
-export const shuffle = arr => {
-  let _arr = arr.slice();
+export const shuffle = (arr) => {
+  let _arr = arr.slice()
   for (let i = 0; i < _arr.length; i++) {
-    let j = getRandomInt(0, i);
-    let t = _arr[i];
-    _arr[i] = arr[j];
-    _arr[j] = t;
+    let j = getRandomInt(0, i)
+    let t = _arr[i]
+    _arr[i] = arr[j]
+    _arr[j] = t
   }
-  return _arr;
-};
+  return _arr
+}

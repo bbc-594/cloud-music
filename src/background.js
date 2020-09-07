@@ -1,8 +1,8 @@
 'use strict';
 
-import { app, protocol, BrowserWindow, Menu } from 'electron';
+import { app, protocol, BrowserWindow, Menu, ipcMain } from 'electron';
 import {
-  createProtocol
+  createProtocol,
   /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib';
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -13,17 +13,20 @@ let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
+    minWidth: 700,
+    minHeight: 500,
     height: 600,
+    frame: false,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -35,7 +38,7 @@ function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html');
   }
-
+  ipcMainListen();
   win.on('closed', () => {
     win = null;
   });
@@ -49,13 +52,13 @@ function createMenu() {
         label: 'App Demo',
         submenu: [
           {
-            role: 'about'
+            role: 'about',
           },
           {
-            role: 'quit'
-          }
-        ]
-      }
+            role: 'quit',
+          },
+        ],
+      },
     ];
     let menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
@@ -63,6 +66,21 @@ function createMenu() {
     // windows及linux系统
     Menu.setApplicationMenu(null);
   }
+}
+function ipcMainListen() {
+  ipcMain.on('minimize', () => {
+    win.minimize();
+  });
+  ipcMain.on('maximize', () => {
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
+  });
+  ipcMain.on('close', () => {
+    win.close();
+  });
 }
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -104,7 +122,7 @@ app.on('ready', async () => {
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
-    process.on('message', data => {
+    process.on('message', (data) => {
       if (data === 'graceful-exit') {
         app.quit();
       }

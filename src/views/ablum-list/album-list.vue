@@ -52,58 +52,34 @@ export default {
   name: 'albumList',
   components: {
     SongList,
-    Loading
+    Loading,
   },
   data() {
     return {
       songList: [],
       album: {},
-      show: false
+      show: false,
     };
   },
   props: {},
   watch: {
-    // getMore(val) {
-    //   if (val) {
-    //     this.getmore();
-    //   }
-    // }
-    // currentList() {
-    //   // const selector = 'song-list-top';
-    //   // const { coverImgUrl } = this.currentList;
-    //   // this.changeBg(selector, coverImgUrl);
-    //   this.$nextTick(() => {
-    //     // this.songList.length = 0;
-    //     this.result = {};
-    //   });
-    //   console.log('this.songList :', this.songList);
-    //   this.getListDetail();
-    // }
     $route() {
       this.getAlbum();
-    }
+    },
   },
   computed: {
-    ...mapGetters(['userInfo', 'currentList'])
+    ...mapGetters(['userInfo', 'currentList']),
   },
   mounted() {},
   created() {
-    // this.getlikeList();
     this.getAlbum();
   },
   methods: {
-    // changeBg(selector, imgUrl) {
-    //   console.log('imgUrl :', imgUrl);
-    //   document.styleSheets[0].addRule(
-    //     '.song-list-top::before',
-    //     'background:url(' + imgUrl + ')'
-    //   );
-    // },
     getAlbum: async function() {
       const { id } = this.$route.query;
       let res = await this.$api.albumDetail(id);
       const {
-        data: { songs, album }
+        data: { songs, album },
       } = res;
       this.songList = songs;
       this.album = album;
@@ -121,8 +97,8 @@ export default {
         }
         this.show = !show;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

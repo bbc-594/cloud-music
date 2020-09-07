@@ -150,14 +150,14 @@ export default {
       offset: 0,
       limit: 20,
       volume: 50,
-      mute: false
+      mute: false,
     };
   },
   components: {
     ProcessBar,
     Pagination,
     // Comment
-    CommentList
+    CommentList,
   },
   created() {
     if (!this.currentSong.id) {
@@ -200,8 +200,8 @@ export default {
       'mode',
       'seqList',
       'playerShow',
-      'fmMode'
-    ])
+      'fmMode',
+    ]),
   },
   watch: {
     currentSong(oldVal, newVal) {
@@ -224,7 +224,7 @@ export default {
     volume(val) {
       this.mute = val === 0 ? true : false;
       this.$refs.player.volume = val / 100;
-    }
+    },
   },
   methods: {
     end() {
@@ -237,7 +237,7 @@ export default {
     getFm: async function() {
       let res = await this.$api.personal_FM();
       const {
-        data: { data }
+        data: { data },
       } = res;
       // this.songList = data;
       this.setFmMode(true);
@@ -315,7 +315,7 @@ export default {
       offset = offset * limit;
       let res = await this.$api.musicComment(id, limit, offset);
       const {
-        data: { hotComments, comments, total, more }
+        data: { hotComments, comments, total, more },
       } = res;
       if (hotComments) {
         this.hotComments = hotComments;
@@ -392,14 +392,14 @@ export default {
     },
     play({ song, index }) {
       const { id } = song;
-      this.$api.songCheck(id).then(async res => {
+      this.$api.songCheck(id).then(async (res) => {
         let {
-          data: { success }
+          data: { success },
         } = res;
         if (success) {
           let res = await this.$api.songUrl(id);
           let {
-            data: { data }
+            data: { data },
           } = res;
           const { url } = data[0];
           this.setCurSong(createSong({ url, ...song }));
@@ -432,9 +432,9 @@ export default {
       'setPlayList',
       'setPlayer',
       'setFmMode',
-      'setSeqList'
-    ])
-  }
+      'setSeqList',
+    ]),
+  },
 };
 </script>
 
@@ -579,39 +579,24 @@ export default {
   }
   .normal-enter-active,
   .normal-leave-active {
-    left: 0;
-    // bottom: 60px;
-    bottom: 0;
-    // transform: scale(1);
-    // opacity: 0;
     overflow: hidden;
-    transition: all 0.2s;
+    transition: all 0.2s ease-in-out;
   }
   .normal-enter,
   .normal-leave-to {
-    // opacity: 0;
-    // width: 0;
-    // height: 0;
-    left: -90vw;
-    bottom: -100vh;
-    // opacity: 0;
-    // transition: all 0.3s;
-    // transform: scale(0);
+    transform: translate(-100%, 100%);
   }
   .mini-player {
     cursor: default;
     width: 100%;
     height: 60px;
-    // position: fixed;
     display: flex;
     align-items: center;
-    // bottom: 0;
     z-index: 999;
     background-color: #fff;
     .song-pic {
       width: 60px;
       height: 100%;
-      margin-left: 5px;
       img {
         width: 100%;
       }
@@ -651,6 +636,7 @@ export default {
     }
     .volumn {
       display: flex;
+      min-width: 100px;
       padding-right: 20px;
       align-items: center;
       svg {

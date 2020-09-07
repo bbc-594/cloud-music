@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <app-title />
     <a-layout id="components-layout-demo-responsive">
       <a-layout-sider
         breakpoint="lg"
@@ -137,6 +138,7 @@
 import LoginForm from '@/views/user-login/user-login';
 import MiniPlayer from '@/views/mini-player/mini-player';
 import UserOption from '@/views/user-option/user-option';
+import AppTitle from '@/components/app-title/app-title';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'App',
@@ -162,7 +164,7 @@ export default {
       }
       return this.userInfo.profile.nickname;
     },
-    ...mapGetters(['userInfo', 'getMore'])
+    ...mapGetters(['userInfo', 'getMore']),
   },
   data() {
     return {
@@ -173,13 +175,14 @@ export default {
       timer: null,
       // 创建歌单
       createdList: [],
-      subList: []
+      subList: [],
     };
   },
   components: {
     LoginForm,
     MiniPlayer,
-    UserOption
+    UserOption,
+    AppTitle,
   },
   watch: {
     userInfo() {
@@ -187,7 +190,7 @@ export default {
     },
     $route() {
       this.setMore(false);
-    }
+    },
   },
   methods: {
     _pageInit() {
@@ -250,9 +253,9 @@ export default {
       const { userId } = this.userInfo.profile;
       let res = await this.$api.playList(userId);
       const {
-        data: { playlist }
+        data: { playlist },
       } = res;
-      playlist.forEach(list => {
+      playlist.forEach((list) => {
         list.subscribed ? this.subList.push(list) : this.createdList.push(list);
       });
     },
@@ -263,17 +266,21 @@ export default {
     destroyed() {
       clearTimeout(this.timer);
     },
-    ...mapActions(['setCurList', 'setMore'])
-  }
+    ...mapActions(['setCurList', 'setMore']),
+  },
 };
 </script>
 
 <style lang="less">
 @import '~@/assets/less/index';
+
 .ant-layout {
   background: #fff !important;
+  // &:nth-child(0) {
+  // padding-top: 45px;
+  // }
   // margin-bottom: 60px;
-  height: 100vh;
+  // height: 100vh;
   .ant-menu {
     border: none;
     .ant-menu-item {
@@ -297,6 +304,7 @@ export default {
     border-right: 1px solid #eaeaea;
     overflow: hidden;
     position: relative;
+    padding-top: 45px;
     margin-bottom: 60px;
     .ant-layout-sider-children {
       height: 100%;
@@ -313,6 +321,7 @@ export default {
   .ant-layout-content {
     overflow-y: auto;
     padding-bottom: 60px;
+    padding-top: 45px;
   }
   .user-play-list {
     margin-top: 50px;
@@ -324,12 +333,17 @@ export default {
       font-size: 12px;
     }
   }
+  ::-webkit-scrollbar {
+    width: 0 !important;
+  }
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
   background-color: #fff;
 }
-
+::-webkit-scrollbar {
+  display: none !important;
+}
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
   border-radius: 10px;

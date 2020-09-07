@@ -17,11 +17,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="loading" v-if="songList.length === 0">
-      <a-spin size="large">
-        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
-      </a-spin>
-    </div> -->
     <loading v-if="songList.length === 0" />
     <div class="list" v-else-if="songList.length > 0 && !searched">
       <song
@@ -67,11 +62,11 @@ export default {
         return -1;
       }
     },
-    ...mapGetters(['currentSong', 'mode'])
+    ...mapGetters(['currentSong', 'mode']),
   },
   components: {
     Song,
-    Loading
+    Loading,
   },
   filters: {
     getId(index) {
@@ -86,11 +81,11 @@ export default {
       if (!artists) {
         return '';
       }
-      artists.forEach(s => {
+      artists.forEach((s) => {
         ret.push(s.name);
       });
       return ret.join('/');
-    }
+    },
   },
   data() {
     return {
@@ -98,18 +93,18 @@ export default {
       selected: -1,
       searched: false,
       searchList: [],
-      keyword: ''
+      keyword: '',
     };
   },
   props: {
     songList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     showPic: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   watch: {
     keyword(val) {
@@ -117,7 +112,7 @@ export default {
         this.searchList.length = 0;
         this.searched = false;
       }
-    }
+    },
   },
   methods: {
     playAll() {
@@ -136,14 +131,14 @@ export default {
       const { id } = song;
       this.setFmMode(false);
       this.setSeqList(this.songList);
-      this.$api.songCheck(id).then(async res => {
+      this.$api.songCheck(id).then(async (res) => {
         let {
-          data: { success }
+          data: { success },
         } = res;
         if (success) {
           let res = await this.$api.songUrl(id);
           let {
-            data: { data }
+            data: { data },
           } = res;
           const { url, code } = data[0];
           if (code === -110) {
@@ -159,7 +154,7 @@ export default {
     },
     search(keyword) {
       let reg = new RegExp(keyword);
-      this.songList.forEach(song => {
+      this.songList.forEach((song) => {
         const album = song.al.name || song.album.name;
         const artist = song.ar || song.artist;
         const artnames = getAuthor(artist);
@@ -177,9 +172,9 @@ export default {
       'setPlayList',
       'setCurIndex',
       'setSeqList',
-      'setFmMode'
-    ])
-  }
+      'setFmMode',
+    ]),
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -44,7 +44,7 @@ export default {
   name: 'likeSongList',
   components: {
     SongList,
-    Loading
+    Loading,
   },
   data() {
     return {
@@ -52,13 +52,13 @@ export default {
       page: 0,
       size: 50,
       songList: [],
-      result: {}
+      result: {},
     };
   },
   props: {
     getMore: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   watch: {
     // getMore(val) {
@@ -76,7 +76,7 @@ export default {
         this.result = {};
       });
       this.getListDetail();
-    }
+    },
   },
   computed: {
     listName() {
@@ -103,7 +103,7 @@ export default {
       const { createTime } = this.result;
       return createTime;
     },
-    ...mapGetters(['userInfo', 'currentList'])
+    ...mapGetters(['userInfo', 'currentList']),
   },
   mounted() {},
   created() {
@@ -121,44 +121,11 @@ export default {
       const { id } = this.currentList;
       let res = await this.$api.playListDetail(id);
       const {
-        data: { playlist }
+        data: { playlist },
       } = res;
       this.result = playlist;
-    }
-    // getlikeList() {
-    //   const { userId: uid } = this.userInfo.profile;
-    //   const { page, size } = this;
-    //   this.$api.likeList(uid).then(async res => {
-    //     let {
-    //       data: { ids }
-    //     } = res;
-    //     this.ids = ids;
-    //     let idsList = ids.slice(page, size);
-    //     this.getSongDetail(idsList);
-    //   });
-    // },
-    // getmore() {
-    //   let { page, size } = this;
-    //   page = page + SIZE;
-    //   size = size + SIZE;
-    //   this.page = page;
-    //   this.size = size;
-    //   let ids = this.ids.slice(page, size);
-    //   this.getSongDetail(ids);
-    // },
-    // getSongDetail: async function(ids) {
-    //   let res = await this.$api.songDetail(ids);
-    //   const {
-    //     data: { songs }
-    //   } = res;
-    //   songs.forEach(song => {
-    //     this.songList.push(song);
-    //   });
-    //   this.$emit('getMore');
-    //   // const { songList } = this;
-    //   // this.songList = [songList, ...songs];
-    // }
-  }
+    },
+  },
 };
 </script>
 

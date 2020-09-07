@@ -1,23 +1,33 @@
 <template>
-  <svg class="icon" aria-hidden="true" :style="{ fontSize: size, color }">
+  <svg
+    class="icon"
+    aria-hidden="true"
+    @click="click"
+    :style="{ width: size, height: size, color }"
+  >
     <use :xlink:href="`#${iconHref}`" />
   </svg>
 </template>
 
 <script>
 export default {
-  name: "icon-svg",
+  name: 'icon-svg',
   props: {
     iconHref: {
-      type: String
+      type: String,
     },
     size: {
-      type: String
+      type: String,
     },
     color: {
-      type: String
-    }
-  }
+      type: String,
+    },
+  },
+  methods: {
+    click() {
+      this.$emit('click');
+    },
+  },
 };
 </script>
 

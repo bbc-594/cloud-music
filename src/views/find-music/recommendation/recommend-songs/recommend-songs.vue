@@ -28,24 +28,24 @@ export default {
     today() {
       return new Date().getDate();
     },
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo']),
   },
   components: {
     SongList,
-    IndexHeader
+    IndexHeader,
   },
   created() {
     this.getTodaysong();
   },
   data() {
     return {
-      songList: []
+      songList: [],
     };
   },
   watch: {
     userInfo() {
       this.getTodaysong();
-    }
+    },
   },
   methods: {
     getTodaysong: async function() {
@@ -53,17 +53,21 @@ export default {
         return;
       }
       let res = await this.$api.recommendSongs();
+      console.log('res :>> ', res);
       let {
-        data: { code, recommend }
+        data: {
+          code,
+          data: { dailySongs },
+        },
       } = res;
       if (code === 200) {
-        this.songList = recommend;
-        this.setSeqList(recommend);
+        this.songList = dailySongs;
+        this.setSeqList(dailySongs);
       }
     },
     login() {},
-    ...mapActions(['setSeqList'])
-  }
+    ...mapActions(['setSeqList']),
+  },
 };
 </script>
 

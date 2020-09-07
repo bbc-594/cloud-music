@@ -2,7 +2,9 @@
   <div>
     <index-header :back="true" />
     <loading v-if="!currentSinger" />
-    <div class="like-song-list" ref="songList" v-else>
+    <div class="like-song-list"
+         ref="songList"
+         v-else>
       <div class="song-list-top">
         <div class="list-title">歌手</div>
         <div class="list-info">
@@ -12,11 +14,8 @@
           <div class="list-des">
             <div class="list-name">{{ currentSinger.name }}</div>
             <div class="singer-alias">
-              <span
-                v-for="(alias, index) of currentSinger.alias"
-                :key="index"
-                >{{ alias }}</span
-              >
+              <span v-for="(alias, index) of currentSinger.alias"
+                    :key="index">{{ alias }}</span>
             </div>
             <div class="singer-achievement">
               <div class="music-size">单曲数:{{ currentSinger.musicSize }}</div>
@@ -27,7 +26,8 @@
       </div>
       <!-- <div class="song-title">{{ currentSinger.name }}的全部歌曲</div> -->
       <song-list :songList="songList" />
-      <div class="getMore" @click="getAllSong">
+      <div class="getMore"
+           @click="getAllSong">
         <p>
           查看全部歌曲
           <a-icon type="right" />
@@ -48,7 +48,7 @@ export default {
     SongList,
     Loading
   },
-  data() {
+  data () {
     return {
       songList: [],
       album: {}
@@ -56,15 +56,15 @@ export default {
   },
   props: {},
   watch: {
-    currentSinger() {
+    currentSinger () {
       this.getTopSong();
     }
   },
   computed: {
     ...mapGetters(['userInfo', 'currentSinger'])
   },
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     // this.getlikeList();
     this.getTopSong();
   },
@@ -76,7 +76,7 @@ export default {
     //     'background:url(' + imgUrl + ')'
     //   );
     // },
-    getTopSong: async function() {
+    getTopSong: async function () {
       const { id } = this.currentSinger;
       let res = await this.$api.artTopSong(id);
       const {
@@ -84,7 +84,7 @@ export default {
       } = res;
       this.songList = songs;
     },
-    getAllSong: async function() {
+    getAllSong: async function () {
       const { id } = this.currentSinger;
       let res = await this.$api.artSongs(id);
     }
@@ -163,16 +163,4 @@ export default {
     margin-bottom: 0;
   }
 }
-// .song-list-top::before {
-//   content: '';
-//   position: absolute;
-//   background-size: cover;
-//   top: 0;
-//   left: 300px;
-//   width: 100%;
-//   height: 100%;
-//   // background-color: rgba(0, 0, 0, 0.85);
-//   filter: blur(22px) contrast(0.9);
-//   // z-index: -99;
-// }
 </style>
